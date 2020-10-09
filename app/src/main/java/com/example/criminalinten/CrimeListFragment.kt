@@ -6,12 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import java.text.DateFormat
+import java.time.format.DateTimeFormatter
 
 private const val TAG = "CrimeListFragment"
 private lateinit var crimeRecyclerView: RecyclerView
@@ -74,12 +77,14 @@ class CrimeListFragment : Fragment() {
                 itemView.findViewById(R.id.crime_title)
             private val dateTextView: TextView =
                 itemView.findViewById(R.id.crime_date)
+            private  val imageSolved:ImageView=itemView.findViewById(R.id.crime_solve)
 
 
             fun bind(crime: Crime) {
                 this.crime = crime
                 titleTextView.text = this.crime.title
-                dateTextView.text = this.crime.date.toString()
+                dateTextView.text = DateFormat.getDateInstance(DateFormat.FULL).format(this.crime.date).toString()
+                imageSolved.visibility=if(crime.isSolved){View.VISIBLE} else{View.GONE}
 
             }
 
@@ -100,12 +105,14 @@ class CrimeListFragment : Fragment() {
             private val dateTextView: TextView =
                 itemView.findViewById(R.id.crime_date)
             private val callPoliceButton:Button=itemView.findViewById(R.id.Serious)
+            private  val imageSolved:ImageView=itemView.findViewById(R.id.crime_Image)
 
             fun bind(crime: Crime) {
                 this.crime = crime
                 titleTextView.text = this.crime.title
-                dateTextView.text = this.crime.date.toString()
+                dateTextView.text = DateFormat.getDateInstance(DateFormat.FULL).format(this.crime.date).toString()
                 callPoliceButton.text="Contact Police"
+                imageSolved.visibility=if(crime.isSolved){View.VISIBLE} else{View.GONE}
 
             }
 
