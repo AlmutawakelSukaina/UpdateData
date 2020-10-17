@@ -107,65 +107,68 @@ class CrimeListFragment : Fragment() {
             }
 
         }
-        private inner class SeriousCrimeHolder(view: View):RecyclerView.ViewHolder(view),View.OnClickListener{
-            private lateinit var crime: Crime
-            init {
-                itemView.setOnClickListener(this)
-            }
-
-            private val titleTextView: TextView =
-                itemView.findViewById(R.id.crime_title)
-            private val dateTextView: TextView =
-                itemView.findViewById(R.id.crime_date)
-            private val callPoliceButton:Button=itemView.findViewById(R.id.Serious)
-            private  val imageSolved:ImageView=itemView.findViewById(R.id.crime_Image)
-
-            fun bind(crime: Crime) {
-                this.crime = crime
-                titleTextView.text = this.crime.title
-                dateTextView.text = DateFormat.getDateInstance(DateFormat.FULL).format(this.crime.date).toString()
-                callPoliceButton.text="Contact Police"
-                imageSolved.visibility=if(crime.isSolved){View.VISIBLE} else{View.GONE}
-
-            }
-
-            override fun onClick(v: View?) {
-                Toast.makeText(context, "${crime.title} pressed!", Toast.LENGTH_SHORT).show()
-
-            }
-
-
-
-        }
+//        private inner class SeriousCrimeHolder(view: View):RecyclerView.ViewHolder(view),View.OnClickListener{
+//            private lateinit var crime: Crime
+//            init {
+//                itemView.setOnClickListener(this)
+//            }
+//
+//            private val titleTextView: TextView =
+//                itemView.findViewById(R.id.crime_title)
+//            private val dateTextView: TextView =
+//                itemView.findViewById(R.id.crime_date)
+//            private val callPoliceButton:Button=itemView.findViewById(R.id.Serious)
+//            private  val imageSolved:ImageView=itemView.findViewById(R.id.crime_Image)
+//
+//            fun bind(crime: Crime) {
+//                this.crime = crime
+//                titleTextView.text = this.crime.title
+//                dateTextView.text = DateFormat.getDateInstance(DateFormat.FULL).format(this.crime.date).toString()
+//                callPoliceButton.text="Contact Police"
+//                imageSolved.visibility=if(crime.isSolved){View.VISIBLE} else{View.GONE}
+//
+//            }
+//
+//            override fun onClick(v: View?) {
+//                Toast.makeText(context, "${crime.title} pressed!", Toast.LENGTH_SHORT).show()
+//
+//            }
+//
+//
+//
+//        }
 
         override fun onCreateViewHolder(parent: ViewGroup,
                                         viewType: Int)
                 : RecyclerView.ViewHolder {
 
-            val view :RecyclerView.ViewHolder=when(viewType)
-            {
-                normal_Crime->CrimeHolder(layoutInflater.inflate(R.layout.list_item_crime, parent, false))
-                else->SeriousCrimeHolder(layoutInflater.inflate(R.layout.serious_crime,parent,false))
-
-            }
+     val view :RecyclerView.ViewHolder=CrimeHolder(layoutInflater.inflate(R.layout.list_item_crime, parent, false))
+//            {
+//                normal_Crime->CrimeHolder(layoutInflater.inflate(R.layout.list_item_crime, parent, false))
+//                else->SeriousCrimeHolder(layoutInflater.inflate(R.layout.serious_crime,parent,false))
+//
+//            }
 
             return view
         }
 
         override fun getItemViewType(position: Int): Int {
-            val type=when(crimes[position].requirePolice){
-                 true-> serious_Crime
-                else -> normal_Crime
-                  }
+               val type=normal_Crime
+                   //when(crimes[position].requirePolice){
+//                 true-> serious_Crime
+//                else -> normal_Crime
+//                  }
             return type;
         }
         override fun getItemCount() = crimes.size
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-            val type=when(crimes[position].requirePolice){
-                true-> (holder as SeriousCrimeHolder).bind(crimes[position])
-                else -> (holder as CrimeHolder).bind(crimes[position])
-            }
+            val type=(holder as CrimeHolder).bind(crimes[position])
+
+//                when(crimes[position].requirePolice){
+//                true-> (holder as SeriousCrimeHolder).bind(crimes[position])
+//                else -> (holder as CrimeHolder).bind(crimes[position])
+//            }
 
 
 
