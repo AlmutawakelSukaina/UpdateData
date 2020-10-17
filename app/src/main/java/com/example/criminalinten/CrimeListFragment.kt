@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,15 +23,12 @@ private lateinit var crimeRecyclerView: RecyclerView
 
 
 class CrimeListFragment : Fragment() {
-    private var adapter: CrimeAdapter? = null
+    private var adapter: CrimeAdapter? = CrimeAdapter(emptyList())
     private val crimeListViewModel: CrimeListViewModel by lazy {
         ViewModelProviders.of(this).get(CrimeListViewModel::class.java)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.d(TAG, "Total crimes:${crimeListViewModel.crimes.size}")
-    }
+
     companion object {
 
         const val serious_Crime=1
@@ -38,6 +36,19 @@ class CrimeListFragment : Fragment() {
         fun newInstance(): CrimeListFragment {
             return CrimeListFragment()
         }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+       crimeListViewModel.crimesListLiveData.observe(
+           viewLifecycleOwner, Observer {
+               crimes->
+               crimes?.let {
+                   Log.i("CrimeSize","crimes size ${crimes.size}")
+                   updateUI(crimes)
+               }
+           }
+       )
     }
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,14 +62,16 @@ class CrimeListFragment : Fragment() {
                     RecyclerView
         crimeRecyclerView.layoutManager =
             LinearLayoutManager(context)
-        updateUI()
+        crimeRecyclerView.adapter = adapter
+      //  updateUI()
 
         return view
     }
-    private fun updateUI() {
-        val crimes = crimeListViewModel.crimes
-        adapter = CrimeAdapter(crimes)
-        crimeRecyclerView.adapter = adapter
+    private fun updateUI(crime:List<Crime>) {
+     //   val crimes = crimeListViewModel.crimes
+       adapter = CrimeAdapter(crime)
+        crimeRecyclerView.adapter=adapter
+
     }
 
 
